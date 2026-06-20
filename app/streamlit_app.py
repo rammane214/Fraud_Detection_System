@@ -9,6 +9,7 @@ import streamlit as st
 import numpy as np
 import joblib
 import pandas as pd
+import os
 
 # -----------------------------
 # PAGE CONFIG
@@ -24,8 +25,14 @@ st.set_page_config(
 # -----------------------------
 @st.cache_resource
 def load_assets():
-    model = joblib.load("../models/xgboost.pkl")
-    scaler = joblib.load("../models/scaler.pkl")
+    # Get the directory where this script is located
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    # Go up one level to project root, then to models
+    model_path = os.path.join(base_dir, "..", "models", "xgboost.pkl")
+    scaler_path = os.path.join(base_dir, "..", "models", "scaler.pkl")
+    
+    model = joblib.load(model_path)
+    scaler = joblib.load(scaler_path)
     return model, scaler
 
 model, scaler = load_assets()
